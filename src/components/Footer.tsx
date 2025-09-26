@@ -1,43 +1,13 @@
 import React from 'react';
 import { Mail, Globe, Shield } from 'lucide-react';
+import { footerContent, type Language } from '../content/marketing';
 
 interface FooterProps {
-  language: 'en' | 'pt';
+  language: Language;
 }
 
 const Footer: React.FC<FooterProps> = ({ language }) => {
-  const content = {
-    en: {
-      copyright: '© 2025 AWS Audit Service. All rights reserved.',
-      description: 'Professional AWS security audit service delivering comprehensive reports within 72 hours.',
-      links: [
-        { text: 'Home', href: '#' },
-        { text: 'Benefits', href: '#benefits' },
-        { text: 'Process', href: '#process' },
-        { text: 'FAQ', href: '#faq' },
-        { text: 'Contact', href: '#contact' }
-      ],
-      legal: [
-        { text: 'Privacy Policy', href: '#' },
-        { text: 'Terms of Service', href: '#' }
-      ]
-    },
-    pt: {
-      copyright: '© 2025 Serviço de Auditoria AWS. Todos os direitos reservados.',
-      description: 'Serviço profissional de auditoria de segurança AWS entregando relatórios abrangentes em 72 horas.',
-      links: [
-        { text: 'Início', href: '#' },
-        { text: 'Benefícios', href: '#benefits' },
-        { text: 'Processo', href: '#process' },
-        { text: 'Perguntas', href: '#faq' },
-        { text: 'Contato', href: '#contact' }
-      ],
-      legal: [
-        { text: 'Política de Privacidade', href: '#' },
-        { text: 'Termos de Serviço', href: '#' }
-      ]
-    }
-  };
+  const content = footerContent[language];
 
   return (
     <footer className="bg-aws-blue-dark text-white pt-12 pb-8">
@@ -49,25 +19,25 @@ const Footer: React.FC<FooterProps> = ({ language }) => {
               <span className="text-2xl font-bold">AWS<span className="text-aws-orange">Audit</span></span>
             </div>
             <p className="text-gray-300 mb-6 max-w-md">
-              {content[language].description}
+              {content.description}
             </p>
             <div className="flex items-center space-x-4">
-              <a href="mailto:contact@awsaudit.com" className="text-gray-300 hover:text-white transition-colors">
+              <a href="mailto:contact@awsaudit.com" className="text-gray-300 hover:text-white transition-colors" aria-label="Email AWS Audit">
                 <Mail className="h-5 w-5" />
               </a>
-              <a href="#" className="text-gray-300 hover:text-white transition-colors">
+              <a href="https://awsaudit.com" className="text-gray-300 hover:text-white transition-colors" aria-label="Visit AWS Audit website">
                 <Globe className="h-5 w-5" />
               </a>
             </div>
           </div>
-          
+
           <div>
-            <h3 className="text-lg font-semibold mb-4">Links</h3>
+            <h3 className="text-lg font-semibold mb-4">{language === 'en' ? 'Links' : 'Links Úteis'}</h3>
             <ul className="space-y-2">
-              {content[language].links.map((link, index) => (
-                <li key={index}>
-                  <a 
-                    href={link.href} 
+              {content.links.map((link) => (
+                <li key={link.text}>
+                  <a
+                    href={link.href}
                     className="text-gray-300 hover:text-white transition-colors"
                   >
                     {link.text}
@@ -76,14 +46,14 @@ const Footer: React.FC<FooterProps> = ({ language }) => {
               ))}
             </ul>
           </div>
-          
+
           <div>
-            <h3 className="text-lg font-semibold mb-4">Legal</h3>
+            <h3 className="text-lg font-semibold mb-4">{language === 'en' ? 'Legal' : 'Jurídico'}</h3>
             <ul className="space-y-2">
-              {content[language].legal.map((link, index) => (
-                <li key={index}>
-                  <a 
-                    href={link.href} 
+              {content.legal.map((link) => (
+                <li key={link.text}>
+                  <a
+                    href={link.href}
                     className="text-gray-300 hover:text-white transition-colors"
                   >
                     {link.text}
@@ -93,9 +63,9 @@ const Footer: React.FC<FooterProps> = ({ language }) => {
             </ul>
           </div>
         </div>
-        
+
         <div className="border-t border-gray-700 pt-8 mt-8 text-center md:text-left text-gray-400">
-          {content[language].copyright}
+          {content.copyright}
         </div>
       </div>
     </footer>

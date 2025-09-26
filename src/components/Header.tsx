@@ -1,8 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X, Globe } from 'lucide-react';
+import {
+  navigationLinks,
+  headerCopy,
+  PURCHASE_LINK,
+  type Language,
+} from '../content/marketing';
 
 interface HeaderProps {
-  language: 'en' | 'pt';
+  language: Language;
   toggleLanguage: () => void;
 }
 
@@ -19,20 +25,10 @@ const Header: React.FC<HeaderProps> = ({ language, toggleLanguage }) => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navItems = {
-    en: [
-      { text: 'Benefits', href: '#benefits' },
-      { text: 'Process', href: '#process' },
-      { text: 'FAQ', href: '#faq' },
-      { text: 'Contact', href: '#contact' },
-    ],
-    pt: [
-      { text: 'Benefícios', href: '#benefits' },
-      { text: 'Processo', href: '#process' },
-      { text: 'Perguntas', href: '#faq' },
-      { text: 'Contato', href: '#contact' },
-    ],
-  };
+  const navItems = navigationLinks[language];
+  const { cta } = headerCopy[language];
+
+  const ctaLabel = language === 'en' ? 'Purchase audit service' : 'Contratar serviço de auditoria';
 
   return (
     <header
@@ -42,14 +38,13 @@ const Header: React.FC<HeaderProps> = ({ language, toggleLanguage }) => {
     >
       <div className="container mx-auto px-4 md:px-6 flex justify-between items-center">
         <div className="flex items-center">
-          <a href="/" className="text-2xl font-bold text-aws-blue">
+          <a href="#" className="text-2xl font-bold text-aws-blue" aria-label="AWS Audit home">
             AWS<span className="text-aws-orange">Audit</span>
           </a>
         </div>
 
-        {/* Desktop Navigation */}
         <nav className="hidden md:flex items-center space-x-8">
-          {navItems[language].map((item) => (
+          {navItems.map((item) => (
             <a
               key={item.text}
               href={item.href}
@@ -61,34 +56,35 @@ const Header: React.FC<HeaderProps> = ({ language, toggleLanguage }) => {
           <button
             onClick={toggleLanguage}
             className="flex items-center text-gray-700 hover:text-aws-orange"
+            aria-label={language === 'en' ? 'Change language to Portuguese' : 'Mudar idioma para inglês'}
           >
             <Globe size={18} className="mr-1" />
             {language === 'en' ? 'PT' : 'EN'}
           </button>
           <a
-            href="https://book.stripe.com/8wM6qC44Sc3ifRKbII"
+            href={PURCHASE_LINK}
             target="_blank"
             rel="noopener noreferrer"
             className="bg-aws-orange text-white font-medium py-2 px-4 rounded hover:bg-aws-orange-dark transition-colors"
+            aria-label={ctaLabel}
           >
-            {language === 'en' ? 'Buy Now' : 'Comprar'}
+            {cta}
           </a>
         </nav>
 
-        {/* Mobile Menu Button */}
         <button
           className="md:hidden text-gray-700"
           onClick={() => setIsMenuOpen(!isMenuOpen)}
+          aria-label={isMenuOpen ? 'Close navigation' : 'Open navigation'}
         >
           {isMenuOpen ? <X size={24} /> : <Menu size={24} />}
         </button>
       </div>
 
-      {/* Mobile Navigation */}
       {isMenuOpen && (
         <div className="md:hidden bg-white shadow-lg">
           <div className="container mx-auto px-4 py-4 flex flex-col space-y-4">
-            {navItems[language].map((item) => (
+            {navItems.map((item) => (
               <a
                 key={item.text}
                 href={item.href}
@@ -104,17 +100,19 @@ const Header: React.FC<HeaderProps> = ({ language, toggleLanguage }) => {
                 setIsMenuOpen(false);
               }}
               className="flex items-center text-gray-700 hover:text-aws-orange"
+              aria-label={language === 'en' ? 'Change language to Portuguese' : 'Mudar idioma para inglês'}
             >
               <Globe size={18} className="mr-1" />
               {language === 'en' ? 'PT' : 'EN'}
             </button>
             <a
-              href="https://book.stripe.com/8wM6qC44Sc3ifRKbII"
+              href={PURCHASE_LINK}
               target="_blank"
               rel="noopener noreferrer"
               className="bg-aws-orange text-white font-medium py-2 px-4 rounded hover:bg-aws-orange-dark transition-colors text-center"
+              aria-label={ctaLabel}
             >
-              {language === 'en' ? 'Buy Now' : 'Comprar'}
+              {cta}
             </a>
           </div>
         </div>
